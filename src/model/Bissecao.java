@@ -3,6 +3,7 @@ package model;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class Bissecao implements ZeroFuncao {
 	 * 
 	 * @param a    limite inferior usado para escolher um xis
 	 * @param b    limite superior usado para escolher o xis
-	 * @param erro criterio da parada 
+	 * @param erro criterio da parada
 	 * @return lista de Double com todos os passos feito para encontar o resultado
 	 * @see Math
 	 * @see Double
@@ -32,6 +33,7 @@ public class Bissecao implements ZeroFuncao {
 	 */
 	@Override
 	public List<Double> calcular(double[] variaveis, double a, double b, double erro) {
+		DecimalFormat df = new DecimalFormat("#.####");
 		List<Double> passos = new ArrayList<Double>();
 		double x = 0.0;
 		double erroT = erro + 1;
@@ -56,34 +58,40 @@ public class Bissecao implements ZeroFuncao {
 			erroT = Math.abs(fxx);
 			passos.add(erroT);
 		}
-		passos.add(x);
+		passos.add(Double.parseDouble(df.format(x).replace(',', '.')));
 		return passos;
 	}
+
 	/**
-	 * Utilizando a classe GeraGrafico gera um grafico 
-	 * marcando o xis calculado pelo metodo da bissecao e desenhandoa funcao
+	 * Utilizando a classe GeraGrafico gera um grafico marcando o xis calculado pelo
+	 * metodo da bissecao e desenhandoa funcao
+	 * 
 	 * @param funcao constantes da equacao que se deseja encontar os xis
 	 * @param titulo titulo para salvar o arquivo do grafico
+	 * @return se o grafico foi gerado retorna verdadeiro
 	 * @see GerarGrafico
 	 */
 	@Override
-	public void gerarGrafico(double[] funcao, String titulo) {
-		List<Double> zero = calcular(funcao, 1, 2, 0.02);
+	public boolean gerarGrafico(double[] funcao, double a, double b, String titulo ) {
+		List<Double> zero = calcular(funcao, a, b, 0.02);
 		double z = zero.get(zero.size() - 1);
-		GerarGrafico.geraGraficoF(funcao, titulo, z);
+		return GerarGrafico.geraGraficoF(funcao, titulo, z);
 
 	}
+
 	/**
-	 * Gera uma tabela com os passos feito para encontrar o zero da funcao
-	 * a partir do metodo calcular utilizando Google Charts monta uma 
-	 * String html e gera a tabela salvando o arquivo no formato html
+	 * Gera uma tabela com os passos feito para encontrar o zero da funcao a partir
+	 * do metodo calcular utilizando Google Charts monta uma String html e gera a
+	 * tabela salvando o arquivo no formato html
+	 * 
 	 * @param variaveis constantes da equacao que se deseja encontar os xis
-	 * @param title titulo da tabela 
+	 * @param title     titulo da tabela
+	 * @return se o tabela foi gerada retorna verdadeiro
 	 * @see calcular
 	 */
 	@Override
-	public void gerarTabela(double[] variaveis, String title) {
-		List<Double> vetor = calcular(variaveis, 1, 2, 0.02);
+	public boolean gerarTabela(double[] variaveis,double a ,double b,String title) {
+		List<Double> vetor = calcular(variaveis, a, b, 0.002);
 		String html2 = "<html>\r\n" + "  <head>\r\n"
 				+ "    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\r\n"
 				+ "    <script type=\"text/javascript\">\r\n"
@@ -105,7 +113,7 @@ public class Bissecao implements ZeroFuncao {
 
 		FileWriter arq = null;
 		try {
-			arq = new FileWriter("..//grafico.html");
+			arq = new FileWriter("tabelas/" + title + ".html");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -115,11 +123,12 @@ public class Bissecao implements ZeroFuncao {
 		gravarArq.printf(html2);
 		try {
 			arq.close();
+			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		return false;
 	}
 
 	private static String arrumaDados(List<Double> vetor) {

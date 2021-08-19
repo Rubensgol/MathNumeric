@@ -24,8 +24,9 @@ public class GerarGrafico {
 	 * @param funcao constantes da funcao para se montada no plano cartesiano
 	 * @param titulo do grafico
 	 * @param zero o zero encontrado nos metodos usados
+	 * @return retorna verdadeiro caso o grafico for gerado corretamente e false se nao
 	 */
-	public static void geraGraficoF(double[] funcao,String titulo, double zero) {
+	public static boolean geraGraficoF(double[] funcao,String titulo, double zero) {
 		double[] xis = new double[10];
 		double[] y = new double[10];
 		String legenda="O zero da funcao:"+zero;
@@ -57,8 +58,10 @@ public class GerarGrafico {
 
 		try {
 			ChartEncoder.createPNG(new FileOutputStream("graficos/"+title+".png"), c);
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 }

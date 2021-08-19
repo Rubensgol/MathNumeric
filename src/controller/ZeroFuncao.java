@@ -27,15 +27,16 @@ public interface ZeroFuncao {
 	 * 
 	 * @param titulo    que sera salvo o grafico
 	 * @param funcao array com as constantes da funcao que se deseja calcular
+	 * @return se o grafico foi gerado retorna verdadeiro
 	 */
-	public void gerarGrafico(double[] funcao, String titulo);
+	public boolean gerarGrafico(double[] funcao,  double a, double b,String titulo);
 
 	/**
 	 * Metodo para gerar a tabela com o passo a passo feito pelo metodo para
 	 * encontrar o zero da funcao
-	 * 
 	 * @param variaveis array com as constantes da funcao que se deseja calcular
 	 * @param title     titulo da tabela
+	 * @return se o tabela foi gerada retorna verdadeiro
 	 */
-	public void gerarTabela(double[] variaveis, String title);
+	public boolean gerarTabela(double[] variaveis,  double a, double b,String title);
 }
