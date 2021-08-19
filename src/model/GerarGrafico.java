@@ -3,7 +3,6 @@ package model;
 import java.awt.Rectangle;
 import java.io.FileOutputStream;
 
-import controller.Equacao;
 import de.progra.charting.ChartEncoder;
 import de.progra.charting.ChartUtilities;
 import de.progra.charting.CoordSystem;
@@ -11,6 +10,7 @@ import de.progra.charting.DefaultChart;
 import de.progra.charting.model.DefaultChartDataModel;
 import de.progra.charting.model.DefaultDataSet;
 import de.progra.charting.render.LineChartRenderer;
+import util.Equacao;
 
 public class GerarGrafico {
 

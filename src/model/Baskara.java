@@ -7,15 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.ZeroFuncao;
+import util.Equacao;
 
+/**
+ * Metodo mais tradicional e simples manualmente o bascara usa contas
+ * matematicas para encontrar os xis de equacoes do segundo grau
+ * 
+ * @author Rubens
+ * @see Equacao
+ */
 public class Baskara implements ZeroFuncao {
 	/**
-	 * Metodo mais tradicional e simples manualmente o bascara usa contas
-	 * matematicas para encontrar os xis de equacoes do segundo grau
 	 * 
-	 * @param variaveis da equacao que se deseja encontar os xis
-	 * @return retorna uma lista de double com todos os passos feito para encontar o
-	 *         resultado
+	 * Utilizando a formula X=-(b±√Δ)/2*a com Δ=b²-4ac se encontra o valor de xis e
+	 * retorna todos os passos feito para chegar
+	 * 
+	 * @param variaveis constantes da equacao que se deseja encontar os xis
+	 * @param a limite inferior usado para escolher um xis
+	 * @param b limite superior usado para escolher o xis
+	 * @param erro 
+	 * @return lista de Double com todos os passos feito para encontar o resultado
+	 * @see Math
+	 * @see Double
+	 * @see List
 	 * 
 	 */
 	@Override
@@ -39,6 +53,13 @@ public class Baskara implements ZeroFuncao {
 		}
 	}
 
+	/**
+	 * Utilizando a classe GeraGrafico gera um grafico 
+	 * marcando o xis calculado por bascara e desenhandoa funcao
+	 * @param funcao constantes da equacao que se deseja encontar os xis
+	 * @param titulo titulo para salvar o arquivo do grafico
+	 * @see GerarGrafico
+	 */
 	@Override
 	public void gerarGrafico(double[] funcao, String titulo) {
 		List<Double> zero = calcular(funcao, 0, 0, 0);
@@ -46,7 +67,14 @@ public class Baskara implements ZeroFuncao {
 		GerarGrafico.geraGraficoF(funcao, titulo, z);
 
 	}
-
+	/**
+	 * Gera uma tabela com os passos feito para encontrar o zero da funcao
+	 * a partir do metodo calcular utilizando Google Charts monta uma 
+	 * String html e gera a tabela salvando o arquivo no formato html
+	 * @param varaveis constantes da equacao que se deseja encontar os xis
+	 * @param title titulo da tabela 
+	 * @see calcular
+	 */
 	@Override
 	public void gerarTabela(double[] variaveis, String title) {
 		List<Double> vetor = calcular(variaveis, 0, 0, 0);
@@ -60,10 +88,9 @@ public class Baskara implements ZeroFuncao {
 				+ "          subtitle: 'passo a passo'\r\n" + "        },\r\n" + "        width: 300,\r\n"
 				+ "        height: 300,\r\n" + "        axes: {\r\n" + "          x: {\r\n"
 				+ "            0: {side: 'top'}\r\n" + "          }\r\n" + "        }\r\n" + "      };\r\n"
-				+ "        data.addColumn('number', 'Delta');\r\n" 
-				+ "        data.addColumn('number', 'x1');\r\n"
-				+ "        data.addColumn('number', 'x2');\r\n" 
-				+ "data.addRows([\r\n" + arrumaDados(vetor) + "        ]);\r\n"
+				+ "        data.addColumn('number', 'Delta');\r\n" + "        data.addColumn('number', 'x1');\r\n"
+				+ "        data.addColumn('number', 'x2');\r\n" + "data.addRows([\r\n" + arrumaDados(vetor)
+				+ "        ]);\r\n"
 				+ "        var table = new google.visualization.Table(document.getElementById('table_div'));" + "\r\n"
 				+ "		table.draw(data, options);" + "\r\n" + "      }\r\n" + "    </script>\r\n" + "  </head>\r\n"
 				+ "  <body>\r\n" + "    <div id=\"table_div\"></div>\r\n" + "  </body>\r\n" + "</html>";
@@ -86,13 +113,14 @@ public class Baskara implements ZeroFuncao {
 		}
 
 	}
-
+	
 	private static String arrumaDados(List<Double> vetor) {
 		String dados = "";
 
 		dados += "[" + String.valueOf(vetor.get(0)) + ", " + String.valueOf(vetor.get(1)) + ", "
 				+ String.valueOf(vetor.get(3)) + "],\r\n";
-		dados += "[" + String.valueOf(vetor.get(0)) + ", " + String.valueOf(vetor.get(2))+ ", " + String.valueOf(vetor.get(4)) + "]\r\n";
+		dados += "[" + String.valueOf(vetor.get(0)) + ", " + String.valueOf(vetor.get(2)) + ", "
+				+ String.valueOf(vetor.get(4)) + "]\r\n";
 
 		return dados;
 	}

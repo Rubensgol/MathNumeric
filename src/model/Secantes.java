@@ -6,11 +6,31 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.Equacao;
 import controller.ZeroFuncao;
+import util.Equacao;
 
+/**
+ * Um derivado do metodo de NewtonRaphson que para evitar de calcular a derivada
+ * da funcao e seu valor a cada iteração a derivada é substituida por
+ * f(xn)-f(xn-1)/xn-xn-1 A convergência é mais rápida que o método da bisseção,
+ * contudo pode ser mais lento que o método NewtonRaphson.
+ * 
+ * @author Rubens
+ *
+ */
 public class Secantes implements ZeroFuncao {
-
+	/**
+	 * utlizando o algortimo xn+1=xn-((xn-xn-1).f(xn)/f(xn)-f(xn-1)) se calcula o
+	 * proximo xis usando dois anteriores
+	 * 
+	 * @param a    limite inferior usado para escolher um ponto inicial
+	 * @param b    usado para escolher o segundo ponto inicial
+	 * @param erro criterio da parada
+	 * @return lista de Double com todos os passos feito para encontar o resultado
+	 * @see Math
+	 * @see Double
+	 * @see List
+	 */
 	@Override
 	public List<Double> calcular(double[] variaveis, double a, double b, double erro) {
 		List<Double> passos = new ArrayList<Double>();
@@ -41,6 +61,14 @@ public class Secantes implements ZeroFuncao {
 		return passos;
 	}
 
+	/**
+	 * Utilizando a classe GeraGrafico gera um grafico marcando o xis calculado pelo
+	 * metodo da Secantes e desenhandoa funcao
+	 * 
+	 * @param funcao constantes da equacao que se deseja encontar os xis
+	 * @param titulo titulo para salvar o arquivo do grafico
+	 * @see GerarGrafico
+	 */
 	@Override
 	public void gerarGrafico(double[] funcao, String titulo) {
 		List<Double> zero = calcular(funcao, -1, 0, 0);
@@ -49,6 +77,15 @@ public class Secantes implements ZeroFuncao {
 
 	}
 
+	/**
+	 * Gera uma tabela com os passos feito para encontrar o zero da funcao a partir
+	 * do metodo calcular utilizando Google Charts monta uma String html e gera a
+	 * tabela salvando o arquivo no formato html
+	 * 
+	 * @param varaveis constantes da equacao que se deseja encontar os xis
+	 * @param title    titulo da tabela
+	 * @see calcular
+	 */
 	@Override
 	public void gerarTabela(double[] variaveis, String title) {
 		List<Double> vetor = calcular(variaveis, 1.5, 1.7, 0.02);

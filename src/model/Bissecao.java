@@ -6,11 +6,30 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.Equacao;
 import controller.ZeroFuncao;
+import util.Equacao;
 
+/**
+ * O metodo da bissecao se caracteriza por: dividi-se o intervalo recebido no
+ * meio e obter um x para usar como um novo limite do intervalo ate se obter o
+ * zero da funcao ou atingir o criterio de parada
+ * 
+ * @author Rubens
+ *
+ */
 public class Bissecao implements ZeroFuncao {
-
+	/**
+	 * pegando sempre a metade do intervalo recebido e utlizando esse novo valor
+	 * para calcular o lado mais proximo vai se aproximando da raiz da equacao
+	 * 
+	 * @param a    limite inferior usado para escolher um xis
+	 * @param b    limite superior usado para escolher o xis
+	 * @param erro criterio da parada 
+	 * @return lista de Double com todos os passos feito para encontar o resultado
+	 * @see Math
+	 * @see Double
+	 * @see List
+	 */
 	@Override
 	public List<Double> calcular(double[] variaveis, double a, double b, double erro) {
 		List<Double> passos = new ArrayList<Double>();
@@ -40,7 +59,13 @@ public class Bissecao implements ZeroFuncao {
 		passos.add(x);
 		return passos;
 	}
-
+	/**
+	 * Utilizando a classe GeraGrafico gera um grafico 
+	 * marcando o xis calculado pelo metodo da bissecao e desenhandoa funcao
+	 * @param funcao constantes da equacao que se deseja encontar os xis
+	 * @param titulo titulo para salvar o arquivo do grafico
+	 * @see GerarGrafico
+	 */
 	@Override
 	public void gerarGrafico(double[] funcao, String titulo) {
 		List<Double> zero = calcular(funcao, 1, 2, 0.02);
@@ -48,9 +73,16 @@ public class Bissecao implements ZeroFuncao {
 		GerarGrafico.geraGraficoF(funcao, titulo, z);
 
 	}
-
+	/**
+	 * Gera uma tabela com os passos feito para encontrar o zero da funcao
+	 * a partir do metodo calcular utilizando Google Charts monta uma 
+	 * String html e gera a tabela salvando o arquivo no formato html
+	 * @param varaveis constantes da equacao que se deseja encontar os xis
+	 * @param title titulo da tabela 
+	 * @see calcular
+	 */
 	@Override
-	public void gerarTabela(double[] variaveis,String title) {
+	public void gerarTabela(double[] variaveis, String title) {
 		List<Double> vetor = calcular(variaveis, 1, 2, 0.02);
 		String html2 = "<html>\r\n" + "  <head>\r\n"
 				+ "    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\r\n"
