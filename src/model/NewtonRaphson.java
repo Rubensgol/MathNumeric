@@ -10,52 +10,51 @@ import controller.ZeroFuncao;
 import util.Equacao;
 
 /**
- * Metodo mais tradicional e simples manualmente o bascara usa contas
- * matematicas para encontrar os xis de equacoes do segundo grau
+ * O metodo NewTonRaphson e um dos metodos mais poderosos para se encontrar zero
+ * da funcao utlizando a derivada da funcao para encontrar tangentes ao ponto
+ * desejado
  * 
  * @author Rubens
- * @see Equacao
+ *
  */
-public class Baskara implements ZeroFuncao {
+public class NewtonRaphson implements ZeroFuncao {
 	/**
-	 * 
-	 * Utilizando a formula X=-(bÂ±âˆšÎ”)/2*a com Î”=bÂ²-4ac se encontra o valor de xis e
-	 * retorna todos os passos feito para chegar
-	 * 
-	 * @param variaveis constantes da equacao que se deseja encontar os xis
-	 * @param a limite inferior usado para escolher um xis
-	 * @param b limite superior usado para escolher o xis
-	 * @param erro usado
+	 * utilizando o algoritmo xn=xn-1-f(xn-1)/f’(xn-1) a cada iteração é possivel
+	 * chegar a aproximação do zero da funcao rapidamente 
+	 * @param a limite inferiorusado para escolher um ponto inicial
+	 * @param b    limite superior usado para escolher um ponto inicial
+	 * @param erro criterio da parada
 	 * @return lista de Double com todos os passos feito para encontar o resultado
 	 * @see Math
 	 * @see Double
 	 * @see List
-	 * 
 	 */
 	@Override
 	public List<Double> calcular(double[] variaveis, double a, double b, double erro) {
 		List<Double> passos = new ArrayList<Double>();
-		if (variaveis.length > 3)
-			return null;
-		else {
-			double zeros[] = new double[2];
-			double delta = (variaveis[1] * variaveis[1]) - (4 * variaveis[0] * variaveis[2]);
-			passos.add(delta);
-			zeros[0] = ((-1 * variaveis[1]) - Math.sqrt(delta));
-			passos.add(zeros[0]);
-			zeros[0] = zeros[0] / 2 * variaveis[0];
-			passos.add(zeros[0]);
-			zeros[1] = ((-1 * variaveis[1]) + Math.sqrt(delta));
-			passos.add(zeros[1]);
-			zeros[1] = zeros[1] / 2 * variaveis[0];
-			passos.add(zeros[1]);
-			return passos;
+		double x = a;
+		double erroT = erro + 1;
+		double fx;
+		double flx;
+		while (erroT > erro) {
+			fx = Equacao.resolveEquacao(variaveis, x);
+			passos.add(x);
+			passos.add(fx);
+			flx = Equacao.derivada(variaveis, x);
+			passos.add(flx);
+			x = x - fx / flx;
+			passos.add(x);
+			erroT = Math.abs(Equacao.resolveEquacao(variaveis, x));
+			passos.add(erroT);
 		}
+		passos.add(x);
+		return passos;
 	}
 
 	/**
-	 * Utilizando a classe GeraGrafico gera um grafico 
-	 * marcando o xis calculado por bascara e desenhandoa funcao
+	 * Utilizando a classe GeraGrafico gera um grafico marcando o xis calculado pelo
+	 * metodo da NewtonRaphson e desenhandoa funcao
+	 * 
 	 * @param funcao constantes da equacao que se deseja encontar os xis
 	 * @param titulo titulo para salvar o arquivo do grafico
 	 * @see GerarGrafico
@@ -65,39 +64,42 @@ public class Baskara implements ZeroFuncao {
 		List<Double> zero = calcular(funcao, 0, 0, 0);
 		double z = zero.get(zero.size() - 1);
 		GerarGrafico.geraGraficoF(funcao, titulo, z);
-
 	}
+
 	/**
-	 * Gera uma tabela com os passos feito para encontrar o zero da funcao
-	 * a partir do metodo calcular utilizando Google Charts monta uma 
-	 * String html e gera a tabela salvando o arquivo no formato html
+	 * Gera uma tabela com os passos feito para encontrar o zero da funcao a partir
+	 * do metodo calcular utilizando Google Charts monta uma String html e gera a
+	 * tabela salvando o arquivo no formato html
+	 * 
 	 * @param variaveis constantes da equacao que se deseja encontar os xis
-	 * @param title titulo da tabela 
+	 * @param title    titulo da tabela
 	 * @see calcular
 	 */
 	@Override
 	public void gerarTabela(double[] variaveis, String title) {
-		List<Double> vetor = calcular(variaveis, 0, 0, 0);
+		List<Double> vetor = calcular(variaveis, 0, 0, 0.002);
 		String html2 = "<html>\r\n" + "  <head>\r\n"
 				+ "    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\r\n"
 				+ "    <script type=\"text/javascript\">\r\n"
 				+ "      google.charts.load('current', {'packages':['table']});\r\n"
 				+ "      google.charts.setOnLoadCallback(drawTable);\r\n" + "\r\n" + "      function drawTable() {\r\n"
 				+ "        var data = new google.visualization.DataTable();\r\n" + "var options = {\r\n"
-				+ "        chart: {\r\n" + "          title: 'Baskara ',\r\n"
+				+ "        chart: {\r\n" + "          title: 'NewTonRaphon',\r\n"
 				+ "          subtitle: 'passo a passo'\r\n" + "        },\r\n" + "        width: 300,\r\n"
 				+ "        height: 300,\r\n" + "        axes: {\r\n" + "          x: {\r\n"
 				+ "            0: {side: 'top'}\r\n" + "          }\r\n" + "        }\r\n" + "      };\r\n"
-				+ "        data.addColumn('number', 'Delta');\r\n" + "        data.addColumn('number', 'x1');\r\n"
-				+ "        data.addColumn('number', 'x2');\r\n" + "data.addRows([\r\n" + arrumaDados(vetor)
-				+ "        ]);\r\n"
+				+ "        data.addColumn('number', 'n');\r\n" + "        data.addColumn('number', 'xn');\r\n"
+				+ "        data.addColumn('number', 'f(xn)');\r\n"
+				+ "        data.addColumn('number', 'derivada(xn)');\r\n"
+				+ "        data.addColumn('number', 'xn+1');\r\n" + "        data.addColumn('number', 'erro');\r\n"
+				+ "data.addRows([\r\n" + arrumaDados(vetor) + "        ]);\r\n"
 				+ "        var table = new google.visualization.Table(document.getElementById('table_div'));" + "\r\n"
 				+ "		table.draw(data, options);" + "\r\n" + "      }\r\n" + "    </script>\r\n" + "  </head>\r\n"
 				+ "  <body>\r\n" + "    <div id=\"table_div\"></div>\r\n" + "  </body>\r\n" + "</html>";
 
 		FileWriter arq = null;
 		try {
-			arq = new FileWriter("..//grafico.html");
+			arq = new FileWriter("tabelas/" + title + ".html");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -113,15 +115,27 @@ public class Baskara implements ZeroFuncao {
 		}
 
 	}
-	
+
 	private static String arrumaDados(List<Double> vetor) {
 		String dados = "";
-
-		dados += "[" + String.valueOf(vetor.get(0)) + ", " + String.valueOf(vetor.get(1)) + ", "
-				+ String.valueOf(vetor.get(3)) + "],\r\n";
-		dados += "[" + String.valueOf(vetor.get(0)) + ", " + String.valueOf(vetor.get(2)) + ", "
-				+ String.valueOf(vetor.get(4)) + "]\r\n";
-
+		int xn = 0;
+		int fxn = 1;
+		int flx = 2;
+		int xn1 = 3;
+		int erro = 4;
+		int repeticao = vetor.size() - 1;
+		repeticao = repeticao / 5;
+		for (int i = 0; i < repeticao; i++) {
+			dados += "[" + String.valueOf(i + 1) + ", " + String.valueOf(vetor.get(xn)) + ", "
+					+ String.valueOf(vetor.get(fxn)) + ", " + String.valueOf(vetor.get(flx)) + ", "
+					+ String.valueOf(vetor.get(xn1)) + ", " + String.valueOf(vetor.get(erro)) + "],\r\n";
+			xn += 5;
+			fxn += 5;
+			flx += 5;
+			xn1 += 5;
+			erro += 5;
+		}
 		return dados;
 	}
+
 }

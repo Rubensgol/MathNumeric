@@ -77,7 +77,7 @@ public class Bissecao implements ZeroFuncao {
 	 * Gera uma tabela com os passos feito para encontrar o zero da funcao
 	 * a partir do metodo calcular utilizando Google Charts monta uma 
 	 * String html e gera a tabela salvando o arquivo no formato html
-	 * @param varaveis constantes da equacao que se deseja encontar os xis
+	 * @param variaveis constantes da equacao que se deseja encontar os xis
 	 * @param title titulo da tabela 
 	 * @see calcular
 	 */

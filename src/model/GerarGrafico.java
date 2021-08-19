@@ -12,8 +12,19 @@ import de.progra.charting.model.DefaultDataSet;
 import de.progra.charting.render.LineChartRenderer;
 import util.Equacao;
 
+/**
+ * Classe responsavel por gerar os grafico no plano cartesiano
+ * utilizando o frameWork charting 
+ * @author Rubens
+ */
 public class GerarGrafico {
-
+	
+	/**
+	 * Metodo principal que gera o grafico a partir das constantes passadas
+	 * @param funcao constantes da funcao para se montada no plano cartesiano
+	 * @param titulo do grafico
+	 * @param zero o zero encontrado nos metodos usados
+	 */
 	public static void geraGraficoF(double[] funcao,String titulo, double zero) {
 		double[] xis = new double[10];
 		double[] y = new double[10];

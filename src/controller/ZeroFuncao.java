@@ -17,7 +17,7 @@ public interface ZeroFuncao {
 	 * @param a         limite inferior do intervalo
 	 * @param b         limite superior do intervalo
 	 * @param erro      variavel do criterio de parada
-	 * @return
+	 * @return retorna uma lista de double com todos os passos feito
 	 */
 	public List<Double> calcular(double[] variaveis, double a, double b, double erro);
 
@@ -26,7 +26,7 @@ public interface ZeroFuncao {
 	 * funcao
 	 * 
 	 * @param titulo    que sera salvo o grafico
-	 * @param variaveis array com as constantes da funcao que se deseja calcular
+	 * @param funcao array com as constantes da funcao que se deseja calcular
 	 */
 	public void gerarGrafico(double[] funcao, String titulo);
 

@@ -82,7 +82,7 @@ public class Secantes implements ZeroFuncao {
 	 * do metodo calcular utilizando Google Charts monta uma String html e gera a
 	 * tabela salvando o arquivo no formato html
 	 * 
-	 * @param varaveis constantes da equacao que se deseja encontar os xis
+	 * @param variaveis constantes da equacao que se deseja encontar os xis
 	 * @param title    titulo da tabela
 	 * @see calcular
 	 */

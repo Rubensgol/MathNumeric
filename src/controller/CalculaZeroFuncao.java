@@ -2,12 +2,11 @@ package controller;
 
 import java.util.List;
 /**
- * 
- * @author Rubens
- *Classe que executa os metodos, de encontar um zero de uma funcao,
+*Classe que executa os metodos, de encontar um zero de uma funcao,
  *gerar um grafico com o zero de uma funcao e gerar uma tabela do passo a passo
  *realizado pelo metodo  
  *a partir da classe escolhida na hora de instanciar o objeto
+ * @author Rubens
  *@see ZeroFuncao
  */
 public class CalculaZeroFuncao {
@@ -15,7 +14,7 @@ public class CalculaZeroFuncao {
 	private ZeroFuncao zerofuncao;
 	/**
 	 * Construtor que recebe a classe que vai ser utilizada para os calculos
-	 * @param zerofuncao
+	 * @param zerofuncao a interface escolhida que vai ser usada para executar os metodos
 	 */
 	public CalculaZeroFuncao(ZeroFuncao zerofuncao) {
 		this.zerofuncao = zerofuncao;
